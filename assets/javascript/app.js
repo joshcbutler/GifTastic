@@ -11,7 +11,7 @@ function addEvents() {
                 method: "GET"
             }).done(
                 function ajaxGifCB(response) {
-                    console.log(response);
+                    console.log(JSON.stringify(response.data[0]));
                     $("#gif-container").empty();
                     for (var i = 0; i < response.data.length; i++) {
                         $("#gif-container").prepend("<p>Rating: " + response.data[i].rating + "</p>");
@@ -20,19 +20,19 @@ function addEvents() {
                         img.attr("data-still", response.data[i].images.downsized_still.url);
                         img.attr("data-animate", response.data[i].images.downsized.url);
                         img.attr("data-state", "still");
-                        $("#gif-container").prepend("<img src='" + response.data[i].images.downsized.url + "'>");
+                        img.on("click", function() {
+                            console.log($(this));
+                            var state = $(this).attr("data-state");
+                            if (state === "still") {
+                                $(this).attr("src", $(this).attr("data-animate"));
+                                $(this).attr("data-state", "animate");
+                            } else { 
+                                $(this).attr("src", $(this).attr("data-still"));
+                                $(this).attr("data-state", "still");
+                            }
+                        });
+                        $("#gif-container").prepend(img);
                     }
-                    $("img").on("click", function() {
-                        console.log($(this));
-                        var state = $(this).attr("data-state");
-                        if (state === "still") {
-                            $(this).attr("src", $(this).attr("data-animate"));
-                            $(this).attr("data-state", "animate");
-                        } else {
-                            $(this).attr("src", $(this).attr("data-still"));
-                            $(this).attr("data-state", "still");
-                        }
-                    });
                 }
             );
         }
@@ -42,11 +42,11 @@ function addEvents() {
 function renderButtons() {
     $("#button-view").empty();
     for (var i = 0; i < gifs.length; i++) {
-        var a = $("<button>");
-        a.addClass("gif");
-        a.attr("data-search", gifs[i].toLowerCase());
-        a.text(gifs[i]);
-        $("#button-view").append(a);
+        var button = $("<button>");
+        button.addClass("gif");
+        button.attr("data-search", gifs[i].toLowerCase());
+        button.text(gifs[i]);
+        $("#button-view").append(button);
     }
 }
 
