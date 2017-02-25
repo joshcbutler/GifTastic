@@ -26,7 +26,7 @@ function addEvents() {
                             if (state === "still") {
                                 $(this).attr("src", $(this).attr("data-animate"));
                                 $(this).attr("data-state", "animate");
-                            } else { 
+                            } else {
                                 $(this).attr("src", $(this).attr("data-still"));
                                 $(this).attr("data-state", "still");
                             }
@@ -54,12 +54,15 @@ $("#add-gifs").on(
     "click",
     function onClickAddGifs(event) {
         event.preventDefault();
+        $("#gifs-input").text("");
         var gif = $("#gifs-input").val().trim();
         gifs.push(gif);
         renderButtons();
         addEvents();
+
     }
 );
 
 renderButtons();
 addEvents();
+
